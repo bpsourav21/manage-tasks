@@ -1,3 +1,4 @@
+import Navbar from '@/component/navbar'
 import './globals.css'
 import { Inter } from 'next/font/google'
 
@@ -15,7 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Navbar />
+        <div className="w-full container mx-auto items-center justify-between mt-0 py-2">
+          {children}
+        </div>
+      </body>
     </html>
   )
 }

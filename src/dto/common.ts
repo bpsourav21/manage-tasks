@@ -5,3 +5,19 @@ export interface Task {
     Location: string;
     Id: string
 }
+
+export interface SignupDto {
+    Name: string;
+    Email: string,
+    Password: string
+}
+
+export interface LoginDto {
+    Email: string,
+    Password: string
+}
+
+export interface CurrentUserDto {
+    Name: string | null;
+    Email: string | null,
+}
