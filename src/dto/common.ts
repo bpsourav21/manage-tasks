@@ -6,7 +6,8 @@ export interface Task {
     Id: string
 }
 
-export interface SignupDto {
+export interface UserDto {
+    Id: string;
     Name: string;
     Email: string,
     Password: string

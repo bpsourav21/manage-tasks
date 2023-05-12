@@ -1,10 +1,11 @@
 "use client"
 
-import { SignupDto } from "@/dto/common";
+import { UserDto } from "@/dto/common";
 import { useState } from "react";
 import { userInfoKey } from "../helpers/constant";
 import { getStoageData, setStoageData } from "../helpers/storage";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Signup = () => {
     const router = useRouter();
@@ -16,19 +17,20 @@ const Signup = () => {
 
     const onSubmitForm = async (e: any) => {
         e.preventDefault();
-        const signup: SignupDto = {
+        const signup: UserDto = {
+            Id: "user_" + Math.random().toString(),
             Name: name,
             Email: email,
             Password: password
         }
 
         const data = await getStoageData(userInfoKey);
-        const isMatch = data.find((val: any) => val.Email == email);
-        if (!isMatch) {
+        const user = data.find((val: any) => val.Email == email);
+        if (!user) {
             data.push(signup)
             setStoageData(userInfoKey, data);
-            router.push('/Login')
             setError(null);
+            router.push("/login")
         }
         else {
             setError("User already exists");
@@ -36,7 +38,6 @@ const Signup = () => {
                 setError(null);
             }, 3000)
         }
-
     }
 
     return (
@@ -96,6 +97,13 @@ const Signup = () => {
 
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign up</button>
+                    </div>
+                    <div className="mt-2 text-center">
+                        <span className="text-sm text-blue-500">
+                            <Link href="/login">
+                                Click here to Login
+                            </Link>
+                        </span>
                     </div>
                 </form>
             </div>

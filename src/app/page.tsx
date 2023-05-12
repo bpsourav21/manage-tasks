@@ -1,7 +1,17 @@
 import Table from '@/component/table'
+import { User } from '@/component/user'
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import ProtectedRoute from './protected';
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
   return (
-    <Table />
+    <ProtectedRoute>
+      <>
+        <Table />
+      </>
+    </ProtectedRoute>
   )
 }

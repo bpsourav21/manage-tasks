@@ -1,10 +1,13 @@
 "use client"
 
-import { CurrentUserDto, LoginDto, SignupDto } from "@/dto/common";
+import { CurrentUserDto, LoginDto, UserDto } from "@/dto/common";
 import { useState } from "react";
-import { currentUserKey, userInfoKey } from "../helpers/constant";
-import { getStoageData, setCurrentUser, setStoageData } from "../helpers/storage";
+import { userInfoKey } from "../helpers/constant";
+import { getStoageData, setStoageData } from "../helpers/storage";
 import { useRouter } from "next/navigation";
+
+import { signIn, signOut } from "next-auth/react";
+import Link from "next/link";
 
 const Login = () => {
     const router = useRouter();
@@ -21,18 +24,25 @@ const Login = () => {
         }
 
         const data = await getStoageData(userInfoKey);
-        const isMatch: SignupDto | null = data.find((val: any) => val.Email == email && val.Password == password);
-        if (!!isMatch) {
-            router.push('/')
-            setError(null);
-            setCurrentUser(email);
-        }
-        else {
+        const user: UserDto | null = data.find((val: any) => val.Email == email && val.Password == password);
+
+        var res = await signIn('credentials',
+            {
+                redirect: false,
+                user: JSON.stringify(user),
+                callbackUrl: "/"
+            }
+        );
+
+        if (res?.error) {
             setError("Email id or Password not matched!!!")
-            setCurrentUser();
             setTimeout(() => {
                 setError(null);
             }, 3000)
+        }
+        else {
+            setError(null);
+            router.push("/")
         }
     }
 
@@ -79,6 +89,13 @@ const Login = () => {
                     )}
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Login</button>
+                    </div>
+                    <div className="mt-2 text-center">
+                        <span className="text-sm text-blue-500">
+                            <Link href="/signup">
+                                Click here to Signup
+                            </Link>
+                        </span>
                     </div>
                 </form>
             </div>

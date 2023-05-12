@@ -1,27 +1,12 @@
 "use client"
-import { userInfoKey } from "@/app/helpers/constant";
-import { getStoageData, isUserLoggedIn, setCurrentUser } from "@/app/helpers/storage";
-import { SignupDto } from "@/dto/common";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
-    const router = useRouter();
-    const [currentUser, updateCurrentUser] = useState<SignupDto | null>(null);
+    const { data: session } = useSession();
 
-    useEffect(() => {
-        syncupUser()
-    }, [])
-
-    const syncupUser = async () => {
-        const isUser = await isUserLoggedIn();
-        const users = await getStoageData(userInfoKey);
-        const user = users.find((u: SignupDto) => u.Email == isUser);
-        updateCurrentUser(user);
-    }
-
+    let currentUser = session?.user;
     const onLoggedOut = () => {
-        setCurrentUser();
+        signOut();
     }
 
     return (
@@ -37,7 +22,7 @@ const Navbar = () => {
                         </a>
                         {!!currentUser && (
                             <div className="flex justify-between items-center">
-                                <h5 className="text-white text-md">{currentUser.Name}</h5>
+                                <h5 className="text-white text-md">{currentUser.name}</h5>
                                 <button
                                     className="text-white cursor-pointer text-md leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
                                     type="button"
