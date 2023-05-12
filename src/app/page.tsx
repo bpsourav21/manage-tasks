@@ -1,8 +1,7 @@
-import Table from '@/component/table'
-import { User } from '@/component/user'
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import ProtectedRoute from './protected';
+import TaskHome from '@/component/taskHome';
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -10,7 +9,7 @@ export default async function Home() {
   return (
     <ProtectedRoute>
       <>
-        <Table />
+        <TaskHome userKey={session?.user?.email} />
       </>
     </ProtectedRoute>
   )

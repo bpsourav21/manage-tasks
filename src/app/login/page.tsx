@@ -1,6 +1,6 @@
 "use client"
 
-import { CurrentUserDto, LoginDto, UserDto } from "@/dto/common";
+import { LoginDto, UserDto } from "@/dto/common";
 import { useState } from "react";
 import { userInfoKey } from "../helpers/constant";
 import { getStoageData, setStoageData } from "../helpers/storage";

@@ -18,7 +18,7 @@ export interface LoginDto {
     Password: string
 }
 
-export interface CurrentUserDto {
-    Name: string | null;
-    Email: string | null,
+export interface UserInfoMapDto {
+    UserKey: string,
+    Data: Task[]
 }
